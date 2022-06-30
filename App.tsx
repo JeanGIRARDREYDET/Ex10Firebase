@@ -15,8 +15,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import SignOnScreen from './View/Input/SignOn';
+// npm i --save-dev @types/react-native-vector-icons
+// https://oblador.github.io/react-native-vector-icons/
+// Ajouter dans android/app/build.gradle la ligne apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+import SignUpScreen from './View/Input/SignUp';
 import SignInScreen from './View/Input/SignIn';
+import SignOutScreen from './View/Input/SignOut';
 
 const Stack = createBottomTabNavigator();
 
@@ -28,12 +32,15 @@ function App() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'SignOn') {
+          if (route.name === 'SignUp') {
             iconName = focused
-              ? 'home'
-              : 'information';
+              ? 'user-plus'
+              : 'user-plus';
           } else if (route.name === 'SignIn') {
-            iconName = focused ? 'ios-list-box' : 'information';
+            iconName = focused ? 'sign-in-alt' : 'sign-in-alt';
+          } else if (route.name === 'SignOut') {
+            iconName =  'sign-out-alt'
+
           }
 
           // You can return any component that you like here!
@@ -44,8 +51,9 @@ function App() {
       })
     }
       >
-        <Stack.Screen name="SignOn" component={SignOnScreen} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} />
         <Stack.Screen name="SignIn" component={SignInScreen} />
+        <Stack.Screen name="SignOut" component={SignOutScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

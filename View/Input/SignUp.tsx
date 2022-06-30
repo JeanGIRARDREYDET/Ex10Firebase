@@ -15,7 +15,7 @@
      error?: string,
  }
  
- const HomeScreen = ({ placeholder, onChangeText, value, type, onBlur, error }: Props) => {
+ const SignUpScreen = ({ placeholder, onChangeText, value, type, onBlur, error }: Props) => {
      //Si c'est un type password on cache le mot de passe par défaut
      const [isShowPassword, setIsShowPassword] = React.useState<boolean>(type !== "password")
      const toggleShowPassword = () => {
@@ -66,4 +66,4 @@
      },
  })
  
- export default HomeScreen
+ export default SignUpScreen

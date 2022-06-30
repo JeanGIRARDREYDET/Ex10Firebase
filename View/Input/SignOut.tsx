@@ -4,7 +4,7 @@
 
  import React from "react"
  import { StyleSheet, TextInput, View, Text, Pressable } from "react-native"
- import Icon from "react-native-vector-icons/FontAwesome5"
+ import Icon from "react-native-vector-icons/Entypo"
  
  type Props = {
      placeholder: string,
@@ -15,7 +15,7 @@
      error?: string,
  }
  
- const SignInScreen = ({ placeholder, onChangeText, value, type, onBlur, error }: Props) => {
+ const SignOutScreen = ({ placeholder, onChangeText, value, type, onBlur, error }: Props) => {
      //Si c'est un type password on cache le mot de passe par défaut
      const [isShowPassword, setIsShowPassword] = React.useState<boolean>(type !== "password")
      const toggleShowPassword = () => {
@@ -23,7 +23,6 @@
      }
      return (
          <View style={styles.container}>
-           
              <TextInput
                  secureTextEntry={!isShowPassword}
                  keyboardType={type === "email" ? "email-address" : "default"} //On change le clavier en fonction du type de champ
@@ -67,4 +66,4 @@
      },
  })
  
- export default SignInScreen
+ export default SignOutScreen
