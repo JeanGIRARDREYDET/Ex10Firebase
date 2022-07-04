@@ -21,6 +21,9 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import SignUpScreen from './View/Input/SignUp';
 import SignInScreen from './View/Input/SignIn';
 import SignOutScreen from './View/Input/SignOut';
+import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/auth';
+
 
 const Stack = createBottomTabNavigator();
 

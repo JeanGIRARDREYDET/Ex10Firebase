@@ -5,7 +5,7 @@
  import React from "react"
  import { StyleSheet, TextInput, View, Text, Pressable } from "react-native"
  import Icon from "react-native-vector-icons/Entypo"
- 
+ import auth from '@react-native-firebase/auth';
  type Props = {
      placeholder: string,
      onChangeText: (text: string) => void,
@@ -21,19 +21,12 @@
      const toggleShowPassword = () => {
          setIsShowPassword(!isShowPassword)
      }
+     auth()
+  .signOut()
+  .then(() => console.log('User signed out!'));
      return (
          <View style={styles.container}>
-             <TextInput
-                 secureTextEntry={!isShowPassword}
-                 keyboardType={type === "email" ? "email-address" : "default"} //On change le clavier en fonction du type de champ
-                 placeholder={placeholder}
-                 onChangeText={onChangeText}
-                 value={value}
-                 style={styles.inputStyle}
-                 onBlur={onBlur}
-             />
-             {type === "password" && <Pressable onPress={() => { toggleShowPassword() }} style={styles.icon}><Icon name={isShowPassword ? "eye-with-line": "eye" } size={40} color="#00a3e1" /></Pressable>}
-             {error != undefined && <Text style={styles.error}>{error}</Text>}
+             <Text style={styles.error}>User signed out</Text>
          </View>
      )
  }
@@ -52,7 +45,7 @@
          textAlign: 'center',
      },
      error: {
-         color: "red",
+         color: "black",
          fontSize: 12,
          textAlign: "center",
      },

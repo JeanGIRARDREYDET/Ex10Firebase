@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "499773754756",
+    "project_id": "ex10firebase-1ca3c",
+    "storage_bucket": "ex10firebase-1ca3c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499773754756:android:f8863eaa75781490bea1d1",
+        "android_client_info": {
+          "package_name": "com.ex10firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "499773754756-p7vosuhkpfb9nb1miult0pnorkaaller.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfY4020-UiHyIwWnlD4VOAU3FAGW8M4Tg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "499773754756-p7vosuhkpfb9nb1miult0pnorkaaller.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
