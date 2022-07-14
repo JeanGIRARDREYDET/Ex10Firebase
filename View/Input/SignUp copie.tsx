@@ -1,12 +1,10 @@
 /**
  * Champ de saisie de texte comprenant un placeholder. Ce champ prend en charge le blur ainsi que le masquage/apparition du mot de passe en fonction du type de champ.
  */
-
  import React from "react"
  import { StyleSheet,  View, Text, Pressable ,ScrollView} from "react-native"
  import Icon from 'react-native-vector-icons/FontAwesome5';
  import { TextInput } from 'react-native-paper';
-
  type Props = {
      placeholder: string,
      onChangeText: (text: string) => void,

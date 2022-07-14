@@ -51,12 +51,8 @@ const SignUpScreen = () => {
                 //  navigation.navigate("SignUpStep2", { email, password })
             }
         } else {
-            
-
         }
-
     }
-
     const onPasswordBlur = () => {
         setErrors({ ...errors, "password": isNotEmpty(password) ? undefined : "Le mot de passe est vide" })
     }

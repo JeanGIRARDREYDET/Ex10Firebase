@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     inputStyle: {
         color: "#000",
         padding: 10,
-        fontSize: 18,
+      //  fontSize: 18,
         borderColor: "tomato",
         borderWidth: 1,
         textAlign: 'center',

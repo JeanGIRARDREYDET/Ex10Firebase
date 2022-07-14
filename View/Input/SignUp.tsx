@@ -52,7 +52,6 @@ const SignUpScreen = () => {
             
 
         }
-
     }
 
     const onPasswordBlur = () => {
