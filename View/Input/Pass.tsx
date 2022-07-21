@@ -1,10 +1,10 @@
 import React from 'react'
 import firestore from '@react-native-firebase/firestore'
 import { List ,Text,IconButton,TextInput,} from 'react-native-paper'
-import { View ,Alert} from 'react-native'
+import { View ,Alert,TouchableWithoutFeedback} from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-
-
+import auth from '@react-native-firebase/auth';
+import { NavigatorScreenParams } from '@react-navigation/native';
 
 type Props = {
     ID: string,
@@ -41,18 +41,19 @@ function DetailsScreen({ ID, Login, Name,Password,Type, complete ,route, navigat
   );
 }
 
-
 function Pass({ ID, Login, Name,Password,Type, complete }: Props) {
    
   const navigation = useNavigation();
   
-
+  const ref = firestore()
+  .collection('Users')
+  .doc((auth().currentUser?.uid)).collection('MotDePasse');
 
   async function toggleComplete() {   
     Alert.alert(ID);
     await firestore()
       .collection('Users')
-      .doc('koBOVj9u6kGdwsQtj5Ot').collection('MotDePasse')
+      .doc((auth().currentUser?.uid)).collection('MotDePasse')
       .doc(ID)
       .update({
         complete: !complete,
@@ -62,45 +63,39 @@ function Pass({ ID, Login, Name,Password,Type, complete }: Props) {
         Alert.alert(ID);
         await firestore()
           .collection('Users')
-          .doc('koBOVj9u6kGdwsQtj5Ot').collection('MotDePasse')
+          .doc((auth().currentUser?.uid)).collection('MotDePasse')
           .doc(ID)
           .delete();
     }
-    async function updateUsers() {
-        await firestore()
-        .collection('Users')
-        .doc('koBOVj9u6kGdwsQtj5Ot').collection('MotDePasse')
-        .doc(ID).update({
-          Login: 'todo2',
-          Name: 'false',
-          Password: 'false',
-          Email: 'false',
-        });
-      }
+    async function PasswordCreate() {
+      await ref.add({
+        Login: 'todo',
+        Name: 'false',
+        Password: 'false',
+        Email: 'false',
+      });
+    }
   return (
     //<List.Item title={ID}
    // onPress={() => toggleComplete()}
      // left={props => (
         //<List.Icon {...props} icon={complete ? 'check' : 'check'} />
-        <View style={{ height: 30, flex: 1, alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', flexWrap: 'wrap' }}>
+        <TouchableWithoutFeedback  onPress={() =>
+          navigation.navigate('Details', {
+           ID:ID, Login: Login,Name:Name,Password:Password,Type:Type,
+          })
+        } >
+        <View style={{ height: 30, flex: 1, alignItems: 'center', justifyContent: 'space-between', flexDirection: 'row', flexWrap: 'wrap' }}
+        >
        <Text style={{ width: 80, }}>{Login}</Text>
        <Text style={{ width: 80, }}>{Name}</Text>
        <Text style={{ width: 80, }}>{Password}</Text>
        <Text style={{ width: 80, }}>{Type}</Text>
-       <Text style={{ width: 40, }}>
-            <IconButton icon={complete ? 'check' : 'check'}  onPress={() =>
-          navigation.navigate('Details', {
-           ID:ID, Login: Login,Name:Name,Password:Password,Type:Type,
-   
-          })
-        } />
-        </Text>
-        <Text style={{ width: 40, }}>
-            <IconButton icon={'account-edit'} onPress={() => editPass()}/>
-        </Text>
+      
+     
 
-        <IconButton icon={'account-edit'} onPress={() => editPass()}/>
-      </View>
+       
+      </View></TouchableWithoutFeedback>
      // )}
     ///>
   );

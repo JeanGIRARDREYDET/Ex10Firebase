@@ -1,5 +1,5 @@
-import React, { Component, useState } from "react"
-import { StyleSheet, View, Text, Pressable, ScrollView } from "react-native"
+import React, { Component, useState, useEffect } from "react"
+import { StyleSheet, View, Text, Pressable, ScrollView, Alert } from "react-native"
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { TextInput } from 'react-native-paper'
 import Input from "../../Component/Form/Input"
@@ -7,7 +7,9 @@ import Button from "../../Component/Form/Button"
 import { useNavigation } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 import { isEmail, isNotEmpty } from "../../Utils/Form"
-import {UserCreate,UserReadAuth} from "../../Component/Auth/UserCRU"
+import { UserCreate, UserReadAuth } from "../../Component/Auth/UserCRU"
+import auth from '@react-native-firebase/auth';
+import {UserStorage} from "../../Component/Auth/UserStorage"
 
 //type SignUpStep1ScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, "SignUpStep1">
 //On défini un type pour les ereurs possible dans ce formulaire. Cela va nous éviter de faire plusieurs state par erreur comme dans le formulaire de connexion.
@@ -25,30 +27,43 @@ type Props = {
     error?: string,
 }
 const SignUpScreen = () => {
-    const signUp: Boolean= false;
+    const signUp: Boolean = false;
     // const navigation = useNavigation<SignUpStep1ScreenNavigationProp>()
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [passwordConfirmation, setPasswordConfirmation] = useState<string>("")
     const [errors, setErrors] = useState<error>({})
 
+    //const navigation = useNavigation();
+
+   
+
     const onSubmit = () => {
         //On revérifie les champs avant de passer à l'étape suivante.
         onPasswordBlur()
-        signUp ? onPasswordConfirmationBlur():onPasswordBlur();
+
         onEmailBlur()
-        
+
+
+        Alert.alert(errors.password == undefined ? '1' : '0')
+
         //Si il n'y a pas d'erreur, on passe à l'étape suivante
-        if (errors.email == undefined && errors.password == undefined && (errors.passwordConfirmation == undefined && signUp)) {
+        if (errors.email == undefined && errors.password == undefined) {
             //On vérifie que les champs passwords sont identiques
+
+
             if (password !== passwordConfirmation && signUp) {
                 setErrors({ ...errors, "password": "Les mots de passe ne correspondent pas" })
             } else {
                 setErrors({ ...errors, "password": undefined })
 
-                const UserAuth : { Uid: string, errors: string } = (signUp?UserCreate(email, password):UserReadAuth(email, password));
-                console.log("UserAuth : " + UserAuth.errors)
-                //  navigation.navigate("SignUpStep2", { email, password })
+                const UserAuth: { Uid: string | null, errors: string | null } = UserReadAuth(email, password);
+                
+               const tmp= setEmail(UserStorage("user",email))
+               const tmp1=setPassword (UserStorage("password",password))
+                // console.warn("UserAuth : " + UserAuth.errors)
+                //navigation.navigate('PassList')
+
             }
         } else {
         }
@@ -56,26 +71,24 @@ const SignUpScreen = () => {
     const onPasswordBlur = () => {
         setErrors({ ...errors, "password": isNotEmpty(password) ? undefined : "Le mot de passe est vide" })
     }
-    const onPasswordConfirmationBlur = () => {
-        setErrors({ ...errors, "passwordConfirmation": isNotEmpty(passwordConfirmation) ? undefined : "Le mot de passe de confirmation est vide" })
-    }
-
     const onEmailBlur = () => {
         setErrors({ ...errors, "email": isNotEmpty(email) ? undefined : "L'email est vide" })
         if (errors.email == undefined) {
             setErrors({ ...errors, "email": isEmail(email) ? undefined : "L'email n'est pas valide" })
         }
     }
+   
     return (
         <View style={styles.container}>
             <ScrollView>
+
                 <Input placeholder="Email" type="email" onChangeText={setEmail} value={email} onBlur={() => onEmailBlur()} error={errors.email} />
                 <Input placeholder="Mot de passe" type="password" onChangeText={setPassword} value={password} onBlur={() => onPasswordBlur()} error={errors.password} />
-               {signUp?
-                  <Input  placeholder="Confirmation du mot de passe" type="password" onChangeText={setPasswordConfirmation} value={passwordConfirmation} onBlur={() => onPasswordConfirmationBlur()} error={errors.passwordConfirmation} />
-                 :<Text></Text>
+                {signUp ?
+                    <Input placeholder="Confirmation du mot de passe" type="password" onChangeText={setPasswordConfirmation} value={passwordConfirmation} onBlur={() => onPasswordConfirmationBlur()} error={errors.passwordConfirmation} />
+                    : <Text></Text>
                 }
-                <Button onPress={() => onSubmit()} title={signUp?"Sin UP":"Sign In"} type="primary" />
+                <Button onPress={() => onSubmit()} title={signUp ? "Sin UP" : "Sign In"} type="primary" />
             </ScrollView>
         </View>
     )
