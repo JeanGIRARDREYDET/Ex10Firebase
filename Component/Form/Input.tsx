@@ -36,11 +36,12 @@ const Input = ({ placeholder, onChangeText, value, type, onBlur, error }: Props)
                // right={<TextInput.Icon name="eye" /> }
                 left={type === "email" ? "<TextInput.Icon name=\"{email}\" />" : ""}
             />
-            {type === "password" && <Pressable onPress={() => { toggleShowPassword() }} style={styles.icon}><Icon name={isShowPassword ? "eye-with-line": "eye" } size={40} color="tomato" /></Pressable>}
+            {type === "password" && <Pressable onPress={() => { toggleShowPassword() }} style={styles.icon}><Icon name={isShowPassword ? "eye-slash": "eye" } size={40} color="tomato" /></Pressable>}
             {error != undefined && <Text style={styles.error}>{error}</Text>}
         </View>
     )
 }
+
 
 const styles = StyleSheet.create({
     container: {

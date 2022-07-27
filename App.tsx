@@ -7,7 +7,6 @@
  *
  * @format
  */
-
 import React, { useEffect, useState, } from "react"
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View, } from 'react-native';
 import { Colors, DebugInstructions, Header, LearnMoreLinks, ReloadInstructions, } from 'react-native/Libraries/NewAppScreen';
@@ -25,13 +24,19 @@ import PassListScreen from './View/Input/PassList';
 import DetailsScreen from './View/Input/PassDetails';
 import firebase from '@react-native-firebase/app';
 //import '@react-native-firebase/auth';
-import auth from '@react-native-firebase/auth'
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth'
 const Stack = createBottomTabNavigator();
 
 function App() {
   const [edit, setEdit] = useState('');
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<any>();
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged((user) => setUser(user));
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -52,7 +57,7 @@ function App() {
 
             }
             // You can return any component that you like here!
-            return <Icon name={iconName} size={size} color={color} />;
+            return <Icon Name={iconName} size={size} color={color} />;
           },
           tabBarActiveTintColor: 'tomato',
           tabBarInactiveTintColor: 'gray',
@@ -60,25 +65,24 @@ function App() {
         }
       >
         {
-          (!auth().currentUser) ?
-           <Stack.Screen name="SignUp" component={SignUpScreen}/>
-           
+          user ?
+            (
+              <Stack.Group>
+                <Stack.Screen name="PassList" component={PassListScreen} />
+                <Stack.Screen name="Details" component={DetailsScreen} options={{ unmountOnBlur: true }} />
+                <Stack.Screen name="SignOut" component={SignOutScreen} options={{ unmountOnBlur: true, }} />
+              </Stack.Group>
+            )
             :
-            <Stack.Screen name="PassList" component={PassListScreen} />
+            (
+              <Stack.Group screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="SignUp" component={SignUpScreen} />
+                <Stack.Screen name="SignIn" component={SignInScreen} options={{ unmountOnBlur: true }} />
+              </Stack.Group>
+            )
         }
-        {
-          (!auth().currentUser) ?
-            <Stack.Screen name="SignIn" component={SignInScreen}  options={{ unmountOnBlur: true }} />
-            :
-            <Stack.Screen name="Details" component={DetailsScreen} options={{ unmountOnBlur: true }} />
-        }
-
-
-<Stack.Screen name="SignOut" component={SignOutScreen} options={{ unmountOnBlur: true }}/>
-
       </Stack.Navigator>
     </NavigationContainer >
   );
 }
-
 export default App;

@@ -60,7 +60,6 @@ function Pass({ ID, Login, Name,Password,Type, complete }: Props) {
       });
   }
     async function PasswordDelete() {   
-        Alert.alert(ID);
         await firestore()
           .collection('Users')
           .doc((auth().currentUser?.uid)).collection('MotDePasse')
@@ -91,11 +90,8 @@ function Pass({ ID, Login, Name,Password,Type, complete }: Props) {
        <Text style={{ width: 80, }}>{Name}</Text>
        <Text style={{ width: 80, }}>{Password}</Text>
        <Text style={{ width: 80, }}>{Type}</Text>
-      
-     
-
-       
-      </View></TouchableWithoutFeedback>
+      </View>
+      </TouchableWithoutFeedback>
      // )}
     ///>
   );

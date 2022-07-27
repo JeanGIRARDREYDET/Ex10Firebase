@@ -10,6 +10,7 @@ import { isEmail, isNotEmpty } from "../../Utils/Form"
 import { UserCreate, UserReadAuth } from "../../Component/Auth/UserCRU"
 import auth from '@react-native-firebase/auth';
 import {UserStorage} from "../../Component/Auth/UserStorage"
+import MMKV from "react-native-mmkv-storage";
 
 //type SignUpStep1ScreenNavigationProp = NativeStackNavigationProp<AuthStackParamList, "SignUpStep1">
 //On défini un type pour les ereurs possible dans ce formulaire. Cela va nous éviter de faire plusieurs state par erreur comme dans le formulaire de connexion.
@@ -26,9 +27,12 @@ type Props = {
     type: "password" | "text" | "email",
     error?: string,
 }
-const SignUpScreen = () => {
-    const signUp: Boolean = false;
+const AuthContext = React.createContext();
+const SignInScreen = () => {
+    //const signUp: Boolean = false;
+   // const { signIn } = React.useContext(AuthContext);
     // const navigation = useNavigation<SignUpStep1ScreenNavigationProp>()
+    const navigation = useNavigation();
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [passwordConfirmation, setPasswordConfirmation] = useState<string>("")
@@ -36,31 +40,24 @@ const SignUpScreen = () => {
 
     //const navigation = useNavigation();
 
-   
-
     const onSubmit = () => {
         //On revérifie les champs avant de passer à l'étape suivante.
         onPasswordBlur()
-
         onEmailBlur()
-
-
-        Alert.alert(errors.password == undefined ? '1' : '0')
-
         //Si il n'y a pas d'erreur, on passe à l'étape suivante
         if (errors.email == undefined && errors.password == undefined) {
             //On vérifie que les champs passwords sont identiques
-
-
-            if (password !== passwordConfirmation && signUp) {
-                setErrors({ ...errors, "password": "Les mots de passe ne correspondent pas" })
-            } else {
+            if (password !== '' )  {
                 setErrors({ ...errors, "password": undefined })
 
                 const UserAuth: { Uid: string | null, errors: string | null } = UserReadAuth(email, password);
+                //navigation.reset
+                navigation.navigate('SignUp', { });
                 
-               const tmp= setEmail(UserStorage("user",email))
-               const tmp1=setPassword (UserStorage("password",password))
+               
+                // setEmail("tyata")
+            
+                // setPassword(UserStorage("password",password))
                 // console.warn("UserAuth : " + UserAuth.errors)
                 //navigation.navigate('PassList')
 
@@ -81,14 +78,9 @@ const SignUpScreen = () => {
     return (
         <View style={styles.container}>
             <ScrollView>
-
                 <Input placeholder="Email" type="email" onChangeText={setEmail} value={email} onBlur={() => onEmailBlur()} error={errors.email} />
                 <Input placeholder="Mot de passe" type="password" onChangeText={setPassword} value={password} onBlur={() => onPasswordBlur()} error={errors.password} />
-                {signUp ?
-                    <Input placeholder="Confirmation du mot de passe" type="password" onChangeText={setPasswordConfirmation} value={passwordConfirmation} onBlur={() => onPasswordConfirmationBlur()} error={errors.passwordConfirmation} />
-                    : <Text></Text>
-                }
-                <Button onPress={() => onSubmit()} title={signUp ? "Sin UP" : "Sign In"} type="primary" />
+                <Button onPress={() => onSubmit()} title={"Sign In"} type="primary" />
             </ScrollView>
         </View>
     )
@@ -123,4 +115,6 @@ const styles = StyleSheet.create({
     },
 }
 )
-export default SignUpScreen
+export default SignInScreen
+
+

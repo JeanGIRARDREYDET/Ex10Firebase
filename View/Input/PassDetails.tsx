@@ -9,8 +9,10 @@ import auth from '@react-native-firebase/auth';
 const DetailsScreen = () => {
   const route = useRoute();
 
-  const { ID, Login, Name,Password,Type, complete , navigation } = route.params;
-  //ID=""; Login="";  Name="";Password="";Type=""; complete="";  navigation="";
+  //const { ID, Login, Name,Password,Type, complete , navigation } = route.params;
+  var ID=""; 
+  var Login="";  
+  var Name="";var Password="";var Type=""; var complete="";  var navigation="";
 
   
 
@@ -72,7 +74,6 @@ async function PasswordUpdate(values:any) {
       <Text>
         
       </Text>
-    
         <IconButton icon='update' onPress={() => { PasswordUpdate(values) }} />
         <IconButton icon='delete' onPress={() => { PasswordDelete() }} />
         <IconButton icon='key-plus' onPress={() => { PasswordCreate(values) }} />
